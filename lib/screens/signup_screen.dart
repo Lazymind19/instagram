@@ -1,5 +1,7 @@
+import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:instagram/resources/auth_method.dart';
 
 import '../utils/colors.dart';
 import '../widgets/text_input_field.dart';
@@ -77,21 +79,24 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 height: 20,
               ),
               TextInputField(
-                textEditingController: passwordController,
+                textEditingController: bioController,
                 hintText: "Enter bio here",
                 keyboardType: TextInputType.text,
-                isObscure: true,
+                isObscure: false,
               ),
               SizedBox(
                 height: 20,
               ),
               InkWell(
-                onTap: (){},
+                onTap: () async {
+                  String result = await AuthMethod().signUpUser(email: emailController.text, password: passwordController.text, userName: userNameController.text, bio: bioController.text);
+                  log(result);
+                },
                 child: Container(
                   width: double.infinity,
                   alignment: Alignment.center,
                   padding: EdgeInsets.symmetric(vertical: 12),
-                  child: Text("Log-In"),
+                  child: Text("Register"),
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.all(Radius.circular(4)),
                       color: blueColor),
@@ -105,13 +110,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Container(
-                    child: Text("Don't you have an account?"),
+                    child: Text("Already have an account ?"),
                   ),
                   Container(
                     child: InkWell(
                         onTap: (){},
                         child: Text(
-                          "SignUp",
+                          "LogIn",
                           style: TextStyle(fontWeight: FontWeight.bold),
                         )),
                   ),

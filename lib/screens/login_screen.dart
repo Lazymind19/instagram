@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:instagram/resources/auth_method.dart';
 import 'package:instagram/utils/colors.dart';
+import 'package:instagram/utils/snack_bar.dart';
 import 'package:instagram/widgets/text_input_field.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -27,7 +28,7 @@ class _LoginScreenState extends State<LoginScreen> {
   void loginUser() async {
     String res = await AuthMethod().loginUser(email: emailController.text, password: passwordController.text);
     if(res =="Success"){
-      log(res);
+      showSnackBar(res, context);
 
     }else {
       log(res);

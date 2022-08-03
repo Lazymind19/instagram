@@ -38,7 +38,7 @@ class MyApp extends StatelessWidget {
         theme: ThemeData.dark().copyWith(
             backgroundColor: mobileBackgroundColor
         ),
-        home: SignUpScreen()
+        home: LoginScreen()
     );
   }
 }

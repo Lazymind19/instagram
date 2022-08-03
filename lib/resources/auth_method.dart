@@ -6,48 +6,69 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:instagram/resources/storage_method.dart';
-class AuthMethod{
+
+class AuthMethod {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
- Future<String> signUpUser({
+  Future<String> signUpUser({
     required String email,
     required String password,
     required String userName,
     required String bio,
     required Uint8List photo,
+  }) async {
+    String res = "Error occurs";
+    try {
+      // Registering user only if the field is not empty
+      // Validating form from the client side
+      if (email.isNotEmpty ||
+          password.isNotEmpty ||
+          userName.isNotEmpty ||
+          bio.isNotEmpty ||
+          photo.isNotEmpty) {
+        UserCredential credential = await _auth.createUserWithEmailAndPassword(
+            email: email, password: password);
 
-}) async{
-   String res = "Error occurs";
-   try{
-     // Registering user only if the field is not empty
-     // Validating form from the client side
-     if(email.isNotEmpty || password.isNotEmpty || userName.isNotEmpty || bio.isNotEmpty || photo.isNotEmpty){
-     UserCredential credential =  await _auth.createUserWithEmailAndPassword(email: email, password: password);
+        String photoUrl =
+            await StorageMethod().uploadImage("profilePic", photo, false);
 
-     String photoUrl = await StorageMethod().uploadImage("profilePic", photo, false);
+        // adding user to database
+        await _firestore.collection("users").doc(credential.user!.uid).set({
+          'userName': userName,
+          'uid': credential.user!.uid,
+          'email': email,
+          'bio': bio,
+          'followers': [],
+          'following': [],
+          'photoUrl': photoUrl
+        });
+        res = "Success";
+      } else {}
+    } catch (err) {
+      res = err.toString();
+    }
+    return res;
+  }
 
-     // adding user to database
-      await _firestore.collection("users").doc(credential.user!.uid).set({
-         'userName': userName,
-         'uid':credential.user!.uid,
-         'email' : email,
-         'bio' : bio,
-         'followers' : [],
-         'following' : [],
-        'photoUrl' : photoUrl
-       });
-      res = "Success";
+// login method for firebase
 
-     }
-     else {
-
-     }
-
-   }catch(err){
-     res = err.toString();
-   }
-   return res;
-
-}
+  Future<String> loginUser({
+    required String email,
+    required String password,
+  }) async {
+    String res = "Some error Occurs";
+    try {
+      if (email.isNotEmpty || password.isNotEmpty) {
+        await _auth.signInWithEmailAndPassword(
+            email: email, password: password);
+        res = "Success";
+      } else {
+        res = "Please enter all the field";
+      }
+    } catch (err) {
+      res = err.toString();
+    }
+    return res;
+  }
 }

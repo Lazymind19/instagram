@@ -1,5 +1,8 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:instagram/resources/auth_method.dart';
 import 'package:instagram/utils/colors.dart';
 import 'package:instagram/widgets/text_input_field.dart';
 
@@ -19,6 +22,17 @@ class _LoginScreenState extends State<LoginScreen> {
     super.dispose();
     emailController.dispose();
     passwordController.dispose();
+  }
+
+  void loginUser() async {
+    String res = await AuthMethod().loginUser(email: emailController.text, password: passwordController.text);
+    if(res =="Success"){
+      log(res);
+
+    }else {
+      log(res);
+    }
+
   }
 
   @override
@@ -60,7 +74,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 height: 20,
               ),
               InkWell(
-                onTap: (){},
+                onTap: loginUser,
                 child: Container(
                   width: double.infinity,
                   alignment: Alignment.center,

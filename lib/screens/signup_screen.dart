@@ -1,7 +1,10 @@
 import 'dart:developer';
+import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:instagram/resources/auth_method.dart';
+import 'package:instagram/utils/image_picker.dart';
 
 import '../utils/colors.dart';
 import '../widgets/text_input_field.dart';
@@ -18,6 +21,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController bioController = TextEditingController();
+  Uint8List? _image;
+
+  chooseImage() async {
+    Uint8List image = await pickImage(ImageSource.gallery);
+    setState(() {
+        _image = image;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -43,18 +54,31 @@ class _SignUpScreenState extends State<SignUpScreen> {
               ),
               Stack(
                 children: [
-                  CircleAvatar(
+                  _image!=null ? CircleAvatar(
                     radius: 50,
-                   child: Icon(Icons.person, size: 100,),
+                    backgroundImage: MemoryImage(_image!),
+                  ) :CircleAvatar(
+                    radius: 50,
+                    child: Icon(
+                      Icons.person,
+                      size: 100,
+                    ),
                   ),
                   Positioned(
-                    bottom: 0,
+                      bottom: 0,
                       left: 60,
-                      child: IconButton(onPressed: (){},
-                  icon: Icon(Icons.add_a_photo, color: blueColor,),))
+                      child: IconButton(
+                        onPressed: chooseImage,
+                        icon: Icon(
+                          Icons.add_a_photo,
+                          color: blueColor,
+                        ),
+                      ))
                 ],
               ),
-              SizedBox(height: 10,),
+              SizedBox(
+                height: 10,
+              ),
               TextInputField(
                   textEditingController: userNameController,
                   hintText: "Enter User name",
@@ -89,7 +113,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
               ),
               InkWell(
                 onTap: () async {
-                  String result = await AuthMethod().signUpUser(email: emailController.text, password: passwordController.text, userName: userNameController.text, bio: bioController.text);
+                  String result = await AuthMethod().signUpUser(
+                      email: emailController.text,
+                      password: passwordController.text,
+                      userName: userNameController.text,
+                      bio: bioController.text,
+                    photo: _image!
+                  );
                   log(result);
                 },
                 child: Container(
@@ -114,7 +144,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   ),
                   Container(
                     child: InkWell(
-                        onTap: (){},
+                        onTap: () {},
                         child: Text(
                           "LogIn",
                           style: TextStyle(fontWeight: FontWeight.bold),

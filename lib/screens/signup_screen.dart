@@ -4,8 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:instagram/resources/auth_method.dart';
+import 'package:instagram/responsive/responsive_layout_screen.dart';
+import 'package:instagram/screens/login_screen.dart';
 import 'package:instagram/utils/image_picker.dart';
 
+import '../responsive/mobile_screen_layout.dart';
+import '../responsive/web_screen_layout.dart';
 import '../utils/colors.dart';
 import '../widgets/text_input_field.dart';
 
@@ -50,6 +54,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
       });
       if(result == "Success"){
         isLoading = false;
+        Navigator.of(context).pushReplacement(MaterialPageRoute(
+            builder: (context) =>
+            const ResponsiveLayout(webScreenLayout: WebScreenLayout(),
+                mobileScreenLayout: MobileScreenLayout())));
       }
   }
 
@@ -158,7 +166,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   ),
                   Container(
                     child: InkWell(
-                        onTap: () {},
+                        onTap: navigateToLoginScreen,
                         child: Text(
                           "LogIn",
                           style: TextStyle(fontWeight: FontWeight.bold),
@@ -174,5 +182,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
         ),
       ),
     );
+  }
+
+  void navigateToLoginScreen() {
+    Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => const LoginScreen()));
   }
 }

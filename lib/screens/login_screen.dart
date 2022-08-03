@@ -3,6 +3,10 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:instagram/resources/auth_method.dart';
+import 'package:instagram/responsive/mobile_screen_layout.dart';
+import 'package:instagram/responsive/responsive_layout_screen.dart';
+import 'package:instagram/responsive/web_screen_layout.dart';
+import 'package:instagram/screens/signup_screen.dart';
 import 'package:instagram/utils/colors.dart';
 import 'package:instagram/utils/snack_bar.dart';
 import 'package:instagram/widgets/text_input_field.dart';
@@ -30,18 +34,21 @@ class _LoginScreenState extends State<LoginScreen> {
     setState(() {
       _isLoading = true;
     });
-    String res = await AuthMethod().loginUser(email: emailController.text, password: passwordController.text);
-    if(res =="Success"){
+    String res = await AuthMethod().loginUser(
+        email: emailController.text, password: passwordController.text);
+    if (res == "Success") {
       showSnackBar(res, context);
-
-    }else {
+      Navigator.of(context).pushReplacement(MaterialPageRoute(
+          builder: (context) =>
+          const ResponsiveLayout(webScreenLayout: WebScreenLayout(),
+              mobileScreenLayout: MobileScreenLayout())));
+    } else {
       log(res);
     }
 
     setState(() {
       _isLoading = false;
     });
-
   }
 
   @override
@@ -92,7 +99,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     child: CircularProgressIndicator(
                       color: Colors.white,
                     ),
-                  ) :  Text("Log-In"),
+                  ) : Text("Log-In"),
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.all(Radius.circular(4)),
                       color: blueColor),
@@ -110,11 +117,11 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   Container(
                     child: InkWell(
-                      onTap: (){},
+                        onTap: navigateToSignUp,
                         child: Text(
-                      "SignUp",
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    )),
+                          "SignUp",
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        )),
                   ),
                 ],
               ),
@@ -126,5 +133,10 @@ class _LoginScreenState extends State<LoginScreen> {
         ),
       ),
     );
+  }
+
+  void navigateToSignUp() {
+    Navigator.of(context).pushReplacement(
+        MaterialPageRoute(builder: (context) => const SignUpScreen()));
   }
 }

@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:instagram/resources/auth_method.dart';
+import 'package:instagram/screens/home_screen.dart';
 import 'package:instagram/utils/colors.dart';
 import 'package:instagram/utils/snack_bar.dart';
 import 'package:instagram/widgets/text_input_field.dart';

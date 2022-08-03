@@ -22,12 +22,35 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController bioController = TextEditingController();
   Uint8List? _image;
+  bool isLoading = false;
 
   chooseImage() async {
     Uint8List image = await pickImage(ImageSource.gallery);
     setState(() {
         _image = image;
     });
+  }
+
+  signInUser() async{
+    setState(() {
+      isLoading = true;
+    });
+
+      String result = await AuthMethod().signUpUser(
+          email: emailController.text,
+          password: passwordController.text,
+          userName: userNameController.text,
+          bio: bioController.text,
+          photo: _image!
+      );
+      log(result);
+
+      setState(() {
+        isLoading = false;
+      });
+      if(result == "Success"){
+        isLoading = false;
+      }
   }
 
   @override
@@ -112,21 +135,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 height: 20,
               ),
               InkWell(
-                onTap: () async {
-                  String result = await AuthMethod().signUpUser(
-                      email: emailController.text,
-                      password: passwordController.text,
-                      userName: userNameController.text,
-                      bio: bioController.text,
-                    photo: _image!
-                  );
-                  log(result);
-                },
+                onTap: signInUser,
                 child: Container(
                   width: double.infinity,
                   alignment: Alignment.center,
                   padding: EdgeInsets.symmetric(vertical: 12),
-                  child: Text("Register"),
+                  child: isLoading ? CircularProgressIndicator(): Text("Register"),
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.all(Radius.circular(4)),
                       color: blueColor),

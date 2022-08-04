@@ -41,6 +41,7 @@ dependencies:
   flutter_svg:
   image_picker:
   image_picker_web:
+  provider:
 
 dev_dependencies:
   flutter_test:

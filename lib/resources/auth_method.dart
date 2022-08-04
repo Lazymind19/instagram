@@ -4,6 +4,7 @@ import 'dart:typed_data';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:instagram/model/user_model.dart';
 import 'package:instagram/resources/storage_method.dart';
@@ -11,6 +12,13 @@ import 'package:instagram/resources/storage_method.dart';
 class AuthMethod {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
+  Future<UserModel> getUserDetail() async{
+    User currentUser = _auth.currentUser!;
+    DocumentSnapshot snapshot = await _firestore.collection("users").doc(currentUser.uid).get();
+    return UserModel.fromSnap(snapshot);
+  }
+
 
   Future<String> signUpUser({
     required String email,

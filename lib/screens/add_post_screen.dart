@@ -125,7 +125,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
             Icons.cancel,
             color: Colors.white,
           ),
-          onPressed: () {},
+          onPressed: () => emptyImage(),
         ),
         actions: [
           TextButton(

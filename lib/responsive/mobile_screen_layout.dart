@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:instagram/providers/user_provider.dart';
 import 'package:instagram/screens/add_post_screen.dart';
+import 'package:instagram/screens/news_feed.dart';
 import 'package:instagram/utils/colors.dart';
 import 'package:provider/provider.dart';
 
@@ -14,10 +15,10 @@ class MobileScreenLayout extends StatefulWidget {
 }
 
 class _MobileScreenLayoutState extends State<MobileScreenLayout> {
-  int _pageNum = 2;
+  int _pageNum = 0;
 
   final List<Widget> _screens =[
-    Text("Home"),
+    NewsFeed(),
     Text("Search"),
     AddPostScreen(),
     Text("Favorite"),
@@ -34,7 +35,9 @@ class _MobileScreenLayoutState extends State<MobileScreenLayout> {
     UserModel? userModel = Provider.of<UserProvider>(context).getUser;
     return Scaffold(
       backgroundColor: mobileBackgroundColor,
-      body: _screens[_pageNum],
+      body: Container(
+        padding: EdgeInsets.symmetric(horizontal: 20),
+          child: _screens[_pageNum]),
       bottomNavigationBar: CupertinoTabBar(
         currentIndex: _pageNum,
         backgroundColor: mobileBackgroundColor,

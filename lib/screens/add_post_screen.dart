@@ -54,6 +54,12 @@ class _AddPostScreenState extends State<AddPostScreen> {
                     _file = file;
                   });
                 },
+              ), SimpleDialogOption(
+                padding: EdgeInsets.all(20),
+                child: Text("Cancel"),
+                onPressed: () async {
+                  Navigator.of(context).pop();
+                },
               ),
             ],
           );

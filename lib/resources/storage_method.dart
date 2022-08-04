@@ -12,7 +12,7 @@ Future<String> uploadImage(String childName,Uint8List file, bool isPost) async{
   Reference reference = _storage.ref().child(childName).child(_auth.currentUser!.uid);
   if(isPost){
     String id = Uuid().v1();
-    reference.child(id);
+    reference = reference.child(id);
   }
   UploadTask uploadTask = reference.putData(file);
   TaskSnapshot snapshot = await uploadTask;

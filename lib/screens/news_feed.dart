@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:instagram/utils/colors.dart';
+import 'package:instagram/widgets/post_card.dart';
 class NewsFeed extends StatelessWidget {
   const NewsFeed({Key? key}) : super(key: key);
 
@@ -15,9 +16,7 @@ class NewsFeed extends StatelessWidget {
         ],
       ),
       backgroundColor: mobileBackgroundColor,
-      body: Center(
-        child: Text("News feed"),
-      ),
+      body: PostCard()
     );
   }
 }
